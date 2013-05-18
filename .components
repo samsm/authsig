@@ -1,0 +1,10 @@
+---
+:orm: datamapper
+:test: none
+:mock: none
+:script: none
+:renderer: haml
+:stylesheet: none
+:namespace: Authsig
+:migration_format: number
+:admin_renderer: haml
