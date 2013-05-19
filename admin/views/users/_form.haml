@@ -1,0 +1,31 @@
+- error = @user.errors.key?(:service) && @user.errors[:service].count > 0
+%fieldset.control-group{:class => error ? 'has-error' : ''}
+  =f.label :service, :class => 'control-label'
+  .controls
+    =f.text_field :service, :class => 'input-xlarge input-with-feedback', :autofocus => true
+    %span.help-inline=error ? f.error_message_on(:service, :class => 'text-error') : pat(:example)
+- error = @user.errors.key?(:login) && @user.errors[:login].count > 0
+%fieldset.control-group{:class => error ? 'has-error' : ''}
+  =f.label :login, :class => 'control-label'
+  .controls
+    =f.text_field :login, :class => 'input-xlarge input-with-feedback'
+    %span.help-inline=error ? f.error_message_on(:login, :class => 'text-error') : pat(:example)
+- error = @user.errors.key?(:password) && @user.errors[:password].count > 0
+%fieldset.control-group{:class => error ? 'has-error' : ''}
+  =f.label :password, :class => 'control-label'
+  .controls
+    =f.text_field :password, :class => 'input-xlarge input-with-feedback'
+    %span.help-inline=error ? f.error_message_on(:password, :class => 'text-error') : pat(:example)
+- error = @user.errors.key?(:data) && @user.errors[:data].count > 0
+%fieldset.control-group{:class => error ? 'has-error' : ''}
+  =f.label :data, :class => 'control-label'
+  .controls
+    ~f.text_area :data, :class => 'input-xlarge input-with-feedback'
+    %span.help-inline=error ? f.error_message_on(:data, :class => 'text-error') : pat(:example)
+
+.form-actions
+  =f.submit pat(:save), :class => 'btn btn-primary'
+  &nbsp;
+  =f.submit pat(:save_and_continue), :class => 'btn btn-info', :name => 'save_and_continue'
+  &nbsp;
+  =link_to pat(:cancel), url(:users, :index), :class => 'btn'
