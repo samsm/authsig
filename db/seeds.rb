@@ -5,9 +5,9 @@
 #   name = shell.ask("What's your name?")
 #   shell.say name
 #
-email     = shell.ask "Which email do you want use for logging into admin?"
-password  = shell.ask "Tell me the password to use:"
-
+# email     = shell.ask "Which email do you want use for logging into admin?"
+# password  = shell.ask "Tell me the password to use:"
+email, password = 'samsm@samsm.com', 'aaaaaaaa'
 shell.say ""
 
 account = Account.create(:email => email, :name => "Foo", :surname => "Bar", :password => password, :password_confirmation => password, :role => "admin")
@@ -26,3 +26,7 @@ else
 end
 
 shell.say ""
+
+(1..5).each do |n|
+  User.create(login: "user_#{n}", password: 'aaaaaaaa', service: "password")
+end

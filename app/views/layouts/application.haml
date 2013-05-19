@@ -1,0 +1,8 @@
+- if current_user
+  Logged in as
+  = current_user.login
+  %a{href: '/sessions/logout'} logout!
+- else
+  %a{href: '/sessions/login'} login!
+.page-content
+  =yield

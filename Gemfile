@@ -24,6 +24,7 @@ gem 'dm-constraints'
 gem 'dm-aggregates'
 gem 'dm-types'
 gem 'dm-core'
+gem 'dm-types'
 
 gem 'tilt', '1.3.7'
 
@@ -39,3 +40,6 @@ gem 'padrino', '0.11.1'
 # %w(core gen helpers cache mailer admin).each do |g|
 #   gem 'padrino-' + g, '0.11.1'
 # end
+
+# Pardino warden auth
+gem 'padrino-warden'
