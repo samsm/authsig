@@ -11,4 +11,5 @@ class User
     u = first(login: login, service: 'password')
     u if u && u.password == password
   end
+
 end

@@ -26,6 +26,7 @@ gem 'dm-types'
 gem 'dm-core'
 gem 'dm-types'
 
+# Due to some weird bundler or gem bug. I don't know.
 gem 'tilt', '1.3.7'
 
 # Test requirements
@@ -43,3 +44,14 @@ gem 'padrino', '0.11.1'
 
 # Pardino warden auth
 gem 'padrino-warden'
+
+# Pry, fancy irb
+gem 'pry-padrino'
+
+# # a unified interface to key/value stores
+# gem 'moneta'
+
+# Test requirements
+gem 'rr', :group => 'test'
+gem 'rspec', :group => 'test'
+gem 'rack-test', :require => 'rack/test', :group => 'test'

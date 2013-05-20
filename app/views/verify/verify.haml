@@ -1,0 +1,14 @@
+.span12
+  - unless @verification.errors.any?
+    .alert.alert-success.alert-block
+      %h4 This Identity verified!
+      %h5 Details:
+      %ul
+        - params.each_pair do |k,v|
+          %li
+            %strong== #{k}:
+            =v
+  - if @verification.errors.any?
+    %h4 Issues:
+  - error_partials(@verification) do |partial_args|
+    = partial *partial_args

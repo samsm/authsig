@@ -1,4 +1,8 @@
 module Authsig
+
+  def self.admin_login   ; 'authsig'             ; end
+  def self.admin_service ;  'unauthenticateable' ; end
+
   class App < Padrino::Application
     register Padrino::Rendering
     register Padrino::Mailer

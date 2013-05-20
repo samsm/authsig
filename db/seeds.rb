@@ -1,10 +1,6 @@
-# Seed add you the ability to populate your db.
-# We provide you a basic shell for interaction with the end user.
-# So try some code like below:
-#
-#   name = shell.ask("What's your name?")
-#   shell.say name
-#
+admin_login   = Authsig.admin_login
+admin_service = Authsig.admin_service
+
 # email     = shell.ask "Which email do you want use for logging into admin?"
 # password  = shell.ask "Tell me the password to use:"
 email, password = 'samsm@samsm.com', 'aaaaaaaa'
@@ -30,3 +26,12 @@ shell.say ""
 (1..5).each do |n|
   User.create(login: "user_#{n}", password: 'aaaaaaaa', service: "password")
 end
+
+User.create(login: admin_login, service: admin_service)
+
+Secret.create({
+  valid_start: Time.now - (1 * 365 * 24 * 60 * 60), # ~1 year ago
+  valid_end:   Time.now + (1 * 365 * 24 * 60 * 60), # ~1 from now
+  login:       admin_login,
+  service:     admin_service
+})

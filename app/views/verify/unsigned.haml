@@ -1,0 +1,16 @@
+- @verification.view = self
+.span12
+  %p You've arrived at this page to get AuthSig's verification of your identity.
+  - if @verification.errors?
+    %h4 Issues:
+  - @verification.message_partials do |partial_args|
+    = partial *partial_args
+  - if @verification.show_signed_url_to_current_user?
+    %p The following link verifies that AuthSig has confirmed your identity.
+    %p It's a secret. Don't let people copy it.
+    %p= link_to @verification.verified_url, @verification.verified_url
+  %p
+    %a{href: url(:sessions, :login, login: params[:login])}
+      Login as
+      %strong= params[:login]
+      to get a signed url.

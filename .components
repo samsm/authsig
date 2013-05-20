@@ -1,8 +1,8 @@
 ---
 :orm: datamapper
-:test: none
-:mock: none
-:script: none
+:test: rspec
+:mock: rr
+:script: jquery
 :renderer: haml
 :stylesheet: none
 :namespace: Authsig
