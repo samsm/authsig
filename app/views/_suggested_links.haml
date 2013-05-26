@@ -2,3 +2,4 @@
   %li= link_to "user_1 unsigned", url(:verify, :request, login: "user_1")
   - if current_user
     %li= link_to "current user (#{current_user.login}) unsigned", url(:verify, :request, login: current_user.login)
+    %li= link_to "current (#{current_user.login}) with notification", verification_request_url({notify: test_notify_url}, true)

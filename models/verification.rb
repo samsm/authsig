@@ -10,7 +10,7 @@ class Verification
   validates_presence_of :secret, when: prep_context
   validates_presence_of :signature, when: verify_context
   validates_with_method :signature, method: :signature_match_validation, when: verify_context
-  validates_with_method :user, method: :user_match_validation, when: prep_context
+  validates_with_method :user, method: :user_match_validation, when: prep_context # , if: lambda { |v| v.login }
 
   def signature_match_validation
     (!signature || signature_match?) ? true : [false, "Signature didn't match"]
@@ -18,11 +18,7 @@ class Verification
 
   def user_match_validation
     return([false, "No user provided"]) unless user
-    if user.login == login && user.service == service
-      true
-    else
-      [false, "User doesn't match params user."]
-    end
+    user_match? ? true : [false, "User doesn't match params user."]
   end
 
   def user_match?
@@ -46,6 +42,14 @@ class Verification
 
   def show?
     !hide?
+  end
+
+  def notify?
+    notify
+  end
+
+  def notify
+    params["notify"]
   end
 
   # simple accessors

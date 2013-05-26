@@ -36,3 +36,5 @@ end
 Padrino.mount('Authsig::App', :app_file => Padrino.root('app/app.rb')).to('/')
 
 Padrino.mount("Authsig::Admin", :app_file => File.expand_path('../../admin/app.rb', __FILE__)).to("/admin")
+
+Padrino.mount('Authsig::TestNotifier', :app_file => Padrino.root('test_notifier/app.rb')).to('/test_notifier')

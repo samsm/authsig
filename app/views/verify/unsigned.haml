@@ -1,14 +1,14 @@
-- @verification.view = self
+- @verification_presenter.view = self
 .span12
   %p You've arrived at this page to get AuthSig's verification of your identity.
-  - if @verification.errors?
+  - if @verification_presenter.errors?
     %h4 Issues:
-  - @verification.message_partials do |partial_args|
+  - @verification_presenter.message_partials do |partial_args|
     = partial *partial_args
-  - if @verification.show_signed_url_to_current_user?
+  - if @verification_presenter.show_signed_url_to_current_user?
     %p The following link verifies that AuthSig has confirmed your identity.
     %p It's a secret. Don't let people copy it.
-    %p= link_to @verification.verified_url, @verification.verified_url
+    %p= link_to @verification_presenter.verified_url, @verification_presenter.verified_url
   %p
     %a{href: url(:sessions, :login, login: params[:login])}
       Login as

@@ -36,7 +36,6 @@ module Authsig
       render :root
     end
 
-
     ##
     # Caching support
     #

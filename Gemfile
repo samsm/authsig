@@ -16,7 +16,7 @@ gem 'unicorn'
 gem 'rake'
 
 # Component requirements
-gem 'bcrypt-ruby', :require => 'bcrypt'
+gem 'bcrypt-ruby', require: 'bcrypt'
 gem 'haml'
 gem 'dm-sqlite-adapter', group: [:development, :test]
 gem 'dm-validations'
@@ -60,3 +60,6 @@ gem 'rack-test', :require => 'rack/test', :group => 'test'
 
 # Heroku
 gem 'dm-postgres-adapter', :group => :production
+
+# For sending notifications to hosts.
+gem 'rest-client'
