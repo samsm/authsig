@@ -16,7 +16,7 @@ gem 'rake'
 # Component requirements
 gem 'bcrypt-ruby', :require => 'bcrypt'
 gem 'haml'
-gem 'dm-sqlite-adapter'
+gem 'dm-sqlite-adapter', group: [:development, :test]
 gem 'dm-validations'
 gem 'dm-timestamps'
 gem 'dm-migrations'
@@ -55,3 +55,6 @@ gem 'pry-padrino'
 gem 'rr', :group => 'test'
 gem 'rspec', :group => 'test'
 gem 'rack-test', :require => 'rack/test', :group => 'test'
+
+# Heroku
+gem 'dm-postgres-adapter', :group => :production
