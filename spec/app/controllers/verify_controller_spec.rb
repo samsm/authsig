@@ -16,7 +16,7 @@ describe "Verify controller" do
 
   describe "unsigned" do
 
-    it "shouw signed url to correct logged in user" do
+    it "show signed url to correct logged in user" do
       user = OpenStruct.new login: "test", service: "password"
       login_as(user)
 

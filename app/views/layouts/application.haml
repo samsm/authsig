@@ -31,9 +31,11 @@
           - if current_user
             Logged in as
             = current_user.login
-            %a{href: '/sessions/logout'} logout!
+            %a{href: '/sessions/logout'} logout
           - else
-            %a{href: '/sessions/login'} login!
+            %a{href: '/sessions/login'} login
+            or
+            %a{href: '/users'} register
         %p.pull-left
           Copyright &copy;
           =Time.now.year

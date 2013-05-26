@@ -15,5 +15,5 @@ def app
   ##
   # You can handle all padrino applications using instead:
   #   Padrino.application
-  Authsig::App.tap { |app|  }
+  Authsig::App.tap { |app| app.set :protect_from_csrf, false }
 end

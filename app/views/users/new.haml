@@ -1,0 +1,13 @@
+.span12
+  %h1 Register a login and password.
+  %p
+    You cannot use a login that has already been taken, otherwise there is
+    little limit to what login you choose.
+  - form_tag '', :method => 'post' do
+    %label Login:
+    %input{name: "login", type: "text", value: params[:login]}
+    %br
+    %label Password:
+    %input{name: "password", type: "password", value: "aaaaaaaa"}
+    %br
+    %input{type: "submit"}

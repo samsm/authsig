@@ -1,2 +1,4 @@
 %ul
   %li= link_to "user_1 unsigned", url(:verify, :unsigned, login: "user_1")
+  - if current_user
+    %li= link_to "current user (#{current_user.login}) unsigned", url(:verify, :unsigned, login: current_user.login)

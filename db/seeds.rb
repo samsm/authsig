@@ -4,9 +4,10 @@ admin_service = Authsig.admin_service
 # email     = shell.ask "Which email do you want use for logging into admin?"
 # password  = shell.ask "Tell me the password to use:"
 email, password = 'samsm@samsm.com', 'aaaaaaaa'
+name, surname   = 'Sam', 'Schenkman-Moore'
 shell.say ""
 
-account = Account.create(:email => email, :name => "Foo", :surname => "Bar", :password => password, :password_confirmation => password, :role => "admin")
+account = Account.create(:email => email, :name => name, :surname => surname, :password => password, :password_confirmation => password, :role => "admin")
 
 if account.valid?
   shell.say "================================================================="

@@ -9,7 +9,7 @@ Authsig::App.controllers :verify do
 
   get :unsigned, map: '' do
     pass unless params[:login]
-    load_verification(:prep)
+    load_verification(:prep, current_user)
     render "verify/unsigned"
   end
 
@@ -17,8 +17,8 @@ Authsig::App.controllers :verify do
     render "verify/index"
   end
 
-  define_method :load_verification do |context|
-    verification = Verification.new(params, current_user)
+  define_method :load_verification do |context, user|
+    verification = Verification.new(params, user)
     @verification = VerificationPresenter.new(verification, context)
   end
 
