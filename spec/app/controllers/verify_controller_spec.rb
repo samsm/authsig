@@ -4,12 +4,10 @@ require 'ostruct'
 describe "Verify controller" do
   include Warden::Test::Helpers
   after { Warden.test_reset! }
-  describe "index" do
-    before do
-      get "/verify"
-    end
 
+  describe "index" do
     it "returns explanatory message" do
+      get "/verify"
       expect(last_response.body).to match "Provide an identity"
     end
   end
@@ -20,13 +18,13 @@ describe "Verify controller" do
       user = OpenStruct.new login: "test", service: "password"
       login_as(user)
 
-      get "/verify", login: 'test'
+      get "/verify/request", login: 'test'
       expect(last_response.body).
         to match "The following link verifies that AuthSig has confirmed your identity"
     end
 
     it "returns explanatory message" do
-      get "/verify", login: 'test'
+      get "/verify/request", login: 'test'
       expect(last_response.body).
         to match "You've arrived at this page to get AuthSig's verification of your identity."
     end

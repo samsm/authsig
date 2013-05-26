@@ -1,19 +1,19 @@
 Authsig::App.controllers :verify do
 
-  get :verify, map: '' do
-    pass unless params[:signature] && params[:login]
-    @verification = Verification.new(params, current_user)
-    @verification.valid?(:verify)
+  get :verified, map: '/verify/verified' do
+    load_verification(:verify, current_user)
+    # @verification = Verification.new(params, current_user)
+    # @verification.valid?(:verify)
     render "verify/verify"
   end
 
-  get :unsigned, map: '' do
-    pass unless params[:login]
+  get :request, map: '/verify/request' do
     load_verification(:prep, current_user)
     render "verify/unsigned"
   end
 
   get :index do
+    # Create a request?
     render "verify/index"
   end
 

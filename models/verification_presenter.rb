@@ -24,7 +24,7 @@ class VerificationPresenter
   end
 
   def verified_url
-    verify_path = view.url(:verify, :verify, verification.sign.to_signed_hash)
+    verify_path = view.url(:verify, :verified, verification.sign.to_signed_hash)
     view.uri verify_path
   end
 
