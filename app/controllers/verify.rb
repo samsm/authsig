@@ -1,15 +1,20 @@
 Authsig::App.controllers :verify do
 
   get :verified, map: '/verify/verified' do
-    load_verification(:verify, current_user)
+    load_verification(params, current_user)
+    load_verification_presenter(@verification, :verify)
     render "verify/verify"
   end
 
   get :request, map: '/verify/request' do
-    load_verification(:prep, current_user)
-    vn = VerificationNotifier.new(@verification)
-    vn.send if vn.send? rescue RestClient::Forbidden
-    render "verify/unsigned"
+    load_verification(params, current_user)
+    load_verification_presenter(@verification, :prep)
+    verification_notifications
+    if @verification_presenter.redirect?
+      redirect @verification_presenter.redirect_url
+    else
+      render "verify/unsigned"
+    end
   end
 
   get :index do
@@ -17,9 +22,18 @@ Authsig::App.controllers :verify do
     render "verify/index"
   end
 
-  define_method :load_verification do |context, user|
+  define_method :load_verification do |params, user|
     @verification = Verification.new(params, user)
-    @verification_presenter = VerificationPresenter.new(@verification, context)
+  end
+
+  define_method :load_verification_presenter do |verification, context|
+    @verification_presenter = VerificationPresenter.new(verification, context)
+  end
+
+  define_method :verification_notifications do
+    vn = VerificationNotifier.new(@verification)
+    vn.send if vn.send? rescue RestClient::Forbidden
+
   end
 
 end

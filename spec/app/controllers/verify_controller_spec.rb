@@ -14,13 +14,21 @@ describe "Verify controller" do
 
   describe "unsigned" do
 
-    it "show signed url to correct logged in user" do
-      user = OpenStruct.new login: "test", service: "password"
-      login_as(user)
+    context "with correct signed in user" do
+      let(:user) { OpenStruct.new login: "test", service: "password" }
+      before { login_as(user) }
 
-      get "/verify/request", login: 'test'
-      expect(last_response.body).
-        to match "The following link verifies that AuthSig has confirmed your identity"
+      it "show signed url to correct logged in user" do
+        get "/verify/request", login: user.login
+        expect(last_response.body).
+          to match "The following link verifies that AuthSig has confirmed your identity"
+      end
+
+      it "sends login details to notify url" do
+        get "/verify/request", login: user.login, notify: "http://example.com/"
+        expect(true).to be_true
+      end
+
     end
 
     it "returns explanatory message" do

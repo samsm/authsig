@@ -53,7 +53,7 @@ class Verification
   end
 
   # simple accessors
-  [:secret_login, :secret_service, :login, :signature].each do |accessor|
+  [:redirect_url, :secret_login, :secret_service, :login, :signature].each do |accessor|
     define_method accessor do
       params[accessor]
     end

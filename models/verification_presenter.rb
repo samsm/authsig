@@ -6,6 +6,14 @@ class VerificationPresenter
     @verification.valid?(context)
   end
 
+  def redirect?
+    redirect_url
+  end
+
+  def redirect_url
+    verification.redirect_url
+  end
+
   def errors?
     verification.errors.any?
   end
