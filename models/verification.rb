@@ -10,7 +10,7 @@ class Verification
   validates_presence_of :secret, when: prep_context
   validates_presence_of :signature, when: verify_context
   validates_with_method :signature, method: :signature_match_validation, when: verify_context
-  validates_with_method :user, method: :user_match_validation, when: prep_context # , if: lambda { |v| v.login }
+  validates_with_method :user, method: :user_match_validation, when: [:prep], if: lambda { |v| v.login }
 
   def signature_match_validation
     (!signature || signature_match?) ? true : [false, "Signature didn't match"]
@@ -55,7 +55,7 @@ class Verification
   # simple accessors
   [:redirect_url, :secret_login, :secret_service, :login, :signature].each do |accessor|
     define_method accessor do
-      params[accessor]
+      params[accessor.to_s]
     end
   end
 

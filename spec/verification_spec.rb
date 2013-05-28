@@ -21,8 +21,9 @@ describe Verification do
       expect_errors_on(naked_verification, :prep, :login)
     end
 
-    it "should validate presense of user" do
-      expect_errors_on(naked_verification, :prep, :user)
+    it "should validate presense of user when login is present" do
+      with_login = Verification.new("login" => "test")
+      expect_errors_on(with_login, :prep, :user)
     end
 
     it "should not allow wrong user to verify" do

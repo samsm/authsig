@@ -1,5 +1,5 @@
 .span12
-  - unless @verification_presenter.errors.any?
+  - unless @verification_presenter.errors?
     .alert.alert-success.alert-block
       %h4 This Identity verified!
       %h5 Details:
@@ -8,7 +8,7 @@
           %li
             %strong== #{k}:
             =v
-  - if @verification_presenter.errors.any?
+  - if @verification_presenter.errors?
     %h4 Issues:
-  - error_partials(@verification_presenter) do |partial_args|
+  - @verification_presenter.message_partials do |partial_args|
     = partial *partial_args

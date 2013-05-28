@@ -3,6 +3,7 @@ Authsig::App.controllers :verify do
   get :verified, map: '/verify/verified' do
     load_verification(params, current_user)
     load_verification_presenter(@verification, :verify)
+    status @verification_presenter.status_code
     render "verify/verify"
   end
 
@@ -33,7 +34,6 @@ Authsig::App.controllers :verify do
   define_method :verification_notifications do
     vn = VerificationNotifier.new(@verification)
     vn.send if vn.send? rescue RestClient::Forbidden
-
   end
 
 end

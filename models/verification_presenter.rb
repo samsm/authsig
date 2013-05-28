@@ -6,6 +6,11 @@ class VerificationPresenter
     @verification.valid?(context)
   end
 
+  def status_code
+    return 200 unless errors?
+    403
+  end
+
   def redirect?
     redirect_url
   end

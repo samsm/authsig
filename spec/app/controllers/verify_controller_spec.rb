@@ -24,9 +24,10 @@ describe "Verify controller" do
           to match "The following link verifies that AuthSig has confirmed your identity"
       end
 
-      it "sends login details to notify url" do
+      xit "sends login details to notify url" do
+        # Not sure how to do this.
+        app.should_receive :verification_notifications
         get "/verify/request", login: user.login, notify: "http://example.com/"
-        expect(true).to be_true
       end
 
     end
@@ -39,11 +40,15 @@ describe "Verify controller" do
   end
 
   describe "verified" do
-    before do
-      get "/verify", login: 'test', signature: "hi"
+
+    it "should display error when verification fails" do
+      get "/verify/verified", login: 'test', signature: "hi"
+      expect(last_response.status).to eq(403)
+      expect(last_response.body).to match "Signature did not match."
     end
 
-    it "should confirm verfication" do
+    it "should verify with correct signature" do
+      get "/verify/verified", login: 'test', signature: "$2a$10$iGX2Zi3s6vmR2JRQuwuzCu7Y1g5UoJXntkxLBn8XvkeB6T7xBkLAm"
       expect(last_response.status).to eq(200)
     end
   end
