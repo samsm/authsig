@@ -32,10 +32,6 @@ module Authsig
       User.get(id)
     end
 
-    get :root, map: '/' do
-      render :root
-    end
-
     ##
     # Caching support
     #

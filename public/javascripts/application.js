@@ -1,9 +1,10 @@
 $(document).ready(function() {
   $("form input").keyup(function(event) {
     form = $(event.target.parentNode);
+    $("p.suggest-click").show();
     serialized = form.serialize();
     removed_blanks = serialized.replace(/\b\w+=&/g,"");
-    removed_blanks = removed_blanks.replace(/&\w+=$/,"");
+    removed_blanks = removed_blanks.replace(/&?\b\w+=$/,"");
     full_path = "/verify/request?" + removed_blanks
     port = ":" + window.location.port
     if (port == ":80") {

@@ -1,3 +1,5 @@
+require 'ostruct'
+
 Authsig::App.controllers :verify do
 
   get :verified, map: '/verify/verified' do
@@ -18,8 +20,11 @@ Authsig::App.controllers :verify do
     end
   end
 
-  get :index do
-    redirect "/"
+  get :index, map: '/' do
+    user = OpenStruct.new(login: "id-to-verify", service: "password")
+    load_verification({"login" => "id-to-verify"}, user)
+    load_verification_presenter(@verification, :verify)
+    render :root
   end
 
   define_method :load_verification do |params, user|

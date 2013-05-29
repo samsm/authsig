@@ -53,3 +53,7 @@ footer p {
   color: #777;
   text-decoration: none;
 }
+
+p.suggest-click {
+  line-height: 6px;
+}

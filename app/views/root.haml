@@ -1,17 +1,43 @@
+- @verification_presenter.view = self
 .row
   .span12.text-center
-    %a#example{href: "/verify/request"} Enter stuff in the form below to change this link to something useful.
+    %h3
+      %a#example{href: "/verify/request"} Enter stuff in the form below to change this link to something useful.
+    %p.suggest-click.hide
+      %i (click to request verification!)
 .row
-  .span6
+  .span12
     %h1 Welcome to AuthSig
+    %h4 Kinda know what you're doing? Here's a form, go nuts. It modifies the above url.
+    %form{action: "/verify/request", method: "GET"}
+      - %w(login service redirect_url notify hide time).each do |attribute|
+        %label{for: attribute}= "#{attribute}:"
+        %input{id: attribute, name: attribute}
+
+    - if current_user
+      %p Logged in as #{current_user.login}. #{link_to "Logout", url(:sessions, :logout)}?
+    - else
+      %p Want to #{link_to "login", url(:sessions, :login)}? l: user_1, p: aaaaaaaa (that's "a" 8 times)
     %p Request a person's identity by sending them to:
     %p
       %code= uri(url(:verify, :request, login: "id-to-verify"))
     %p
       If AuthSig can verify that the login/service in the url belongs to the currently logged in user,
-      it will reveal a signed url to them (and/or you, depending on settings).
+      it will reveal a signed url to them (and/or you, depending on settings). This signature is based on
+      everything else that is in the query string, plus a secret that only the AuthSig server knows.
     %p
-      %code=uri(url(:verify, :request, login: "id-to-verify", signature: "$2a$10$C6GkdOhoeCc/NoB/TVErguX7rp6mVZZYpB90q3XQUG4yLxZwqVM8q"))
+      %code= @verification_presenter.verified_url
+    %p Visit that url to see if it is valid:
+    %p
+      %code curl -IL "#{@verification_presenter.verified_url}"
+      %code (returns HTTP/1.1 200 OK)
+    %p Tampered urls return 403
+    %p
+      %code curl -IL "#{@verification_presenter.verified_url}&tampered=true"
+      %code (returns HTTP/1.1 403 Forbidden)
+    %p
+      %code curl -IL "#{@verification_presenter.verified_url.sub("id-to-verify", "other-id")}"
+      %code (returns HTTP/1.1 403 Forbidden)
     %p
       Create a url with information you'd like to verify. You can put anything you want in a query string,
       and AuthSig's signature will include that information.
@@ -57,12 +83,6 @@
         more secure controls for "purchasing".
       %dt honey-badger
       %dd "Don't care". You can write this! And like the honey badger, AuthSig WILL NOT CARE!
-  .span6
-    %h4 Here's a form, go nuts.
-    %form{action: "/verify/request", method: "GET"}
-      - %w(login service notify hide time).each do |attribute|
-        %label{for: attribute}= "#{attribute}:"
-        %input{name: attribute}
 
 
 - if false
