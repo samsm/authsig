@@ -69,7 +69,7 @@ class Verification
   end
 
   def service
-    params["service"] || "password"
+    params["service"].blank? ? "password" : params["service"]
   end
 
   def sign

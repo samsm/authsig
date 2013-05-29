@@ -19,8 +19,7 @@ Authsig::App.controllers :verify do
   end
 
   get :index do
-    # Create a request?
-    render "verify/index"
+    redirect "/"
   end
 
   define_method :load_verification do |params, user|

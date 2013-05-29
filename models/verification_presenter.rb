@@ -33,7 +33,11 @@ class VerificationPresenter
   end
 
   def show_signed_url_to_current_user?
-    verification.user_match? && verification.show?
+    user_match? && verification.show?
+  end
+
+  def user_match?
+    verification.user_match?
   end
 
   def verified_url

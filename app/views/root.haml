@@ -1,3 +1,72 @@
-.span12
-  %p This is the root page.
-  = partial 'suggested_links'
+.row
+  .span12.text-center
+    %a#example{href: "/verify/request"} Enter stuff in the form below to change this link to something useful.
+.row
+  .span6
+    %h1 Welcome to AuthSig
+    %p Request a person's identity by sending them to:
+    %p
+      %code= uri(url(:verify, :request, login: "id-to-verify"))
+    %p
+      If AuthSig can verify that the login/service in the url belongs to the currently logged in user,
+      it will reveal a signed url to them (and/or you, depending on settings).
+    %p
+      %code=uri(url(:verify, :request, login: "id-to-verify", signature: "$2a$10$C6GkdOhoeCc/NoB/TVErguX7rp6mVZZYpB90q3XQUG4yLxZwqVM8q"))
+    %p
+      Create a url with information you'd like to verify. You can put anything you want in a query string,
+      and AuthSig's signature will include that information.
+    %p
+      %code=uri(url(:verify, :request, login: "id-to-verify", foo: "bar"))
+    %p It's new! Some stuff might not work.
+    %h3 You can pass whatever you want into the request url, but some stuff has special meaning.
+    %dl
+      %dt login
+      %dd The name of user to be verified. Only user_1 will be able to get a verified url for user_1.
+      %dt service
+      %dd
+        The name of the service to check for the above login. Default is "password", and uses AuthSig's internal
+        authentication database.
+        Another reasonable option might be "twitter" or "facebook".
+      %dt redirect_url
+      %dd If set, the user will be redirected to this url after verification.
+      %dt notify
+      %dd If set, will POST the verification to the url specified here.
+      %dt hide
+      %dd
+        If set, the user will not be show the verified url.
+        It will be a secret from them (works well with notify + redirect_url).
+      %dt time
+      %dd Verifies that this is a valid time.
+    %h4
+      You can add your own features just by adding components to the url.
+      Here's some examples that came to mind while writing this.
+    %dl
+      %dt expires_at
+      %dd
+        A time, after which the signed url is invalid. Could be a decade, a month, could be a minute.
+        Could be a time of day, like "evening". Maybe that verification is only good before 6:00.
+        Who knows!
+      %dt user_id
+      %dd
+        An id that corresponds to another system's user database. Or nonsense.
+        AuthSig doesn't interpret most information you pass in.
+      %dt access
+      %dd
+        Perhaps a string reading "readonly". Or "mega admin". Whatever!
+        This could be useful if you want to use less secure authentication controls for some things, and
+        more secure controls for "purchasing".
+      %dt honey-badger
+      %dd "Don't care". You can write this! And like the honey badger, AuthSig WILL NOT CARE!
+  .span6
+    %h4 Here's a form, go nuts.
+    %form{action: "/verify/request", method: "GET"}
+      - %w(login service notify hide time).each do |attribute|
+        %label{for: attribute}= "#{attribute}:"
+        %input{name: attribute}
+
+
+- if false
+  .row
+    .span12
+      %p This is the root page.
+      = partial 'suggested_links'

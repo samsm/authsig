@@ -3,14 +3,20 @@
   %p You've arrived at this page to get AuthSig's verification of your identity.
   - if @verification_presenter.errors?
     %h4 Issues:
+  - else
+    %h2 Success!
   - @verification_presenter.message_partials do |partial_args|
     = partial *partial_args
   - if @verification_presenter.show_signed_url_to_current_user?
     %p The following link verifies that AuthSig has confirmed your identity.
     %p It's a secret. Don't let people copy it.
     %p= link_to @verification_presenter.verified_url, @verification_presenter.verified_url
-  %p
-    %a{href: url(:sessions, :login, login: params[:login])}
-      Login as
-      %strong= params[:login]
-      to get a signed url.
+  - else
+    - if @verification_presenter.user_match?
+      %p Since "hide" was used in the verification request, AuthSig will not show you the signature or verified url.
+  - unless @verification_presenter.user_match?
+    %p
+      %a{href: url(:sessions, :login, login: params[:login])}
+        Login as
+        %strong= params[:login]
+        to get a signed url.
