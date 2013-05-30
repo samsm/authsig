@@ -27,11 +27,42 @@ describe Verification do
     end
 
     it "should not allow wrong user to verify" do
-      user = OpenStruct.new(login: 'different')
+      user = OpenStruct.new(login: 'different', service: "password")
       verification = Verification.new({"login" => "test"}, user)
       expect_errors_on(verification, :prep, :user)
       expect(verification.errors.on(:user)).to eq ["User doesn't match params user."]
     end
+
+    it "should ensure time is close to current time" do
+      ten_minutes_ago = Time.now - (10 * 60)
+      verification = Verification.new({"time" => ten_minutes_ago.iso8601})
+      expect_errors_on(verification, :prep, :time)
+    end
+
+    it "should acept close times" do
+      verification = Verification.new({"time" => Time.now.iso8601})
+      expect(verification).not_to be_valid(:prep)
+      expect(verification.errors.on(:time)).to be_blank
+    end
+
+    it "should not allow 'provided' conflicts" do
+      verification = Verification.new({"time" => Time.now.to_i, "provides" => "time"})
+      expect_errors_on(verification, :prep, :provided)
+    end
+
+    it "should not populate random provides" do
+      verification = Verification.new({"provides" => "foobarbaz"})
+      expect_errors_on(verification, :prep, :provided)
+      expect(verification.errors.on(:provided)).
+        to eq ["A field AuthSig was supposed to provide can't be populated. Was one of: foobarbaz."]
+    end
+
+    it "should provide time" do
+      verification = Verification.new({"provides" => "time"})
+      populated_time = verification.provided_populated["time"]
+      expect(Time.iso8601(populated_time)).to be <= Time.now
+    end
+
   end
 
   context "verify" do

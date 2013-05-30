@@ -10,7 +10,17 @@ class Verification
   validates_presence_of :secret, when: prep_context
   validates_presence_of :signature, when: verify_context
   validates_with_method :signature, method: :signature_match_validation, when: verify_context
-  validates_with_method :user, method: :user_match_validation, when: [:prep], if: lambda { |v| v.login }
+  validates_with_method :user, method: :user_match_validation, when: [:prep], if: lambda {|v| v.login }
+  validates_with_method :time, method: :close_to_correct_time, when: [:prep], if: lambda {|v| v.time  }
+
+  validates_with_method :provided, method: :cant_provide_that_which_is_already_provided, when: [:prep]
+  validates_with_method :provided, method: :can_populate_all_provided, when: [:prep]
+
+
+  def close_to_correct_time
+    ((Time.now + time_fudge) > time) &&
+    (time > (Time.now - time_fudge))
+  end
 
   def signature_match_validation
     (!signature || signature_match?) ? true : [false, "Signature didn't match"]
@@ -26,13 +36,28 @@ class Verification
     user.login == login && user.service == service
   end
 
+  def can_populate_all_provided
+    return true unless provided_populated.values.collect(&:blank?).compact.any?
+    [false, "A field AuthSig was supposed to provide can't be populated. Was one of: #{provides.join(", ")}."]
+  end
+
+  def cant_provide_that_which_is_already_provided
+    provided = provides.select {|k| params[k] }
+    return true if provided.empty?
+    [
+      false,
+      "Key#{provided.length > 1 ? "s" : ""} #{provided.join(", ")} were requested to be filled in by AuthSig,
+      but were already provided in the request."
+    ]
+  end
+
   attr_reader :params, :user
   def initialize(params, user = nil)
-    @params, @user = params, user
+    @params, @user = params.dup, user
   end
 
   def secret
-    # Secret.valid_time(time).valid_login(secret_login, secret_service).first.random
+    logger.info "Using a dummy secret: BEWARE!"
     'not really a secret'
   end
 
@@ -52,6 +77,32 @@ class Verification
     params["notify"]
   end
 
+  def provides
+    [params["provides"]].flatten.compact
+  end
+
+  def provided_populated
+    provides.inject({}) do |sum, i|
+      sum[i] = provide(i)
+      sum
+    end
+    # provides.collect {|p| provide(p) }
+  end
+
+  def provide(providable_item)
+    case providable_item
+    when "time"
+      Time.now.utc.iso8601
+    when "login"
+      user && user.login
+    when "service"
+      user && user.service
+    end
+  rescue
+    # Should get more specific safeguards here.
+    nil
+  end
+
   # simple accessors
   [:redirect_url, :secret_login, :secret_service, :login, :signature].each do |accessor|
     define_method accessor do
@@ -66,6 +117,11 @@ class Verification
   # These methods are just for additional actions (expiration, etc)
   def time
     time_parse(params["time"])
+  end
+
+  def time_fudge
+    # fudge is a radius: 5 minute fudge provides a 10 minute window, 5 minutes before and after
+    params["time_fudge"] || 300 # in seconds, default to 5 minutes
   end
 
   def service

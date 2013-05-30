@@ -62,7 +62,14 @@
         If set, the user will not be show the verified url.
         It will be a secret from them (works well with notify + redirect_url).
       %dt time
-      %dd Verifies that this is a valid time.
+      %dd
+        Verifies that this is a valid time. During the request process,
+        ensures that this time is near the current time.
+        Accepts iso8601 (must include seconds) or epoch seconds.
+      %dt time_fudge
+      %dd
+        The number of seconds off the above calculation can be. Maybe need to be high if a user needs to
+        log in before continuing the request process.
     %h4
       You can add your own features just by adding components to the url.
       Here's some examples that came to mind while writing this.

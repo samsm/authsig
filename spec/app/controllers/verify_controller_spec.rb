@@ -7,8 +7,8 @@ describe "Verify controller" do
 
   describe "index" do
     it "returns explanatory message" do
-      get "/verify"
-      expect(last_response.body).to match "Provide an identity"
+      get "/"
+      expect(last_response.body).to match "Request a person's identity by sending them"
     end
   end
 
