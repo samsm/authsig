@@ -1,0 +1,5 @@
+.alert.alert-block
+  %h4 Couldn't populate field to be provided.
+  - blanks = verification.provided_populated.reject {|k,v| !v.blank? }
+  = blanks.keys.join(", ")
+  couldn't be populated.

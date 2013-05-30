@@ -53,14 +53,27 @@ describe Verification do
     it "should not populate random provides" do
       verification = Verification.new({"provides" => "foobarbaz"})
       expect_errors_on(verification, :prep, :provided)
-      expect(verification.errors.on(:provided)).
-        to eq ["A field AuthSig was supposed to provide can't be populated. Was one of: foobarbaz."]
+      expect(verification.errors.on(:provided)).to eq ["AuthSig couldn't populate a field requested to be provided."]
     end
 
     it "should provide time" do
       verification = Verification.new({"provides" => "time"})
       populated_time = verification.provided_populated["time"]
       expect(Time.iso8601(populated_time)).to be <= Time.now
+    end
+
+    it "should provide login" do
+      user = OpenStruct.new(login: "test")
+      verification = Verification.new({"provides" => "login"}, user)
+      populated_login = verification.provided_populated["login"]
+      expect(populated_login).to eq "test"
+    end
+
+    it "should provide service" do
+      user = OpenStruct.new(service: "test")
+      verification = Verification.new({"provides" => "service"}, user)
+      populated_service = verification.provided_populated["service"]
+      expect(populated_service).to eq "test"
     end
 
   end

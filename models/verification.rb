@@ -37,8 +37,9 @@ class Verification
   end
 
   def can_populate_all_provided
-    return true unless provided_populated.values.collect(&:blank?).compact.any?
-    [false, "A field AuthSig was supposed to provide can't be populated. Was one of: #{provides.join(", ")}."]
+    blanks = provided_populated.reject {|k,v| !v.blank? }
+    return true if blanks.empty?
+    [false, "AuthSig couldn't populate a field requested to be provided."]
   end
 
   def cant_provide_that_which_is_already_provided
@@ -129,7 +130,7 @@ class Verification
   end
 
   def sign
-    Sign.new(params, secret)
+    Sign.new(params.merge(provided_populated), secret)
   end
 
   def signature_match?
