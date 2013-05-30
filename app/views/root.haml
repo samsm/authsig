@@ -70,6 +70,27 @@
       %dd
         The number of seconds off the above calculation can be. Maybe need to be high if a user needs to
         log in before continuing the request process.
+    %h4 Provides
+    %dl
+      %dt provides
+      %dd
+        %p
+          Pass in a single provides, or more than one in the form of an array. AuthSig will attempt to
+          fill in (Provide) those fields. Currently login, service, and time will work. Overrides other
+          requested params with the same names, if they exist.
+        %ul
+          %li
+            %strong login
+            will fill in currently logged in user's login name
+          %li
+            %strong service
+            will fill in currently logged in user's service
+          %li
+            %strong time
+            will fill in current time
+
+
+
     %h4
       You can add your own features just by adding components to the url.
       Here's some examples that came to mind while writing this.

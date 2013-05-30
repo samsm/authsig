@@ -13,7 +13,6 @@ class Verification
   validates_with_method :user, method: :user_match_validation, when: [:prep], if: lambda {|v| v.login }
   validates_with_method :time, method: :close_to_correct_time, when: [:prep], if: lambda {|v| v.time  }
 
-  validates_with_method :provided, method: :cant_provide_that_which_is_already_provided, when: [:prep]
   validates_with_method :provided, method: :can_populate_all_provided, when: [:prep]
 
 
@@ -42,19 +41,14 @@ class Verification
     [false, "AuthSig couldn't populate a field requested to be provided."]
   end
 
-  def cant_provide_that_which_is_already_provided
-    provided = provides.select {|k| params[k] }
-    return true if provided.empty?
-    [
-      false,
-      "Key#{provided.length > 1 ? "s" : ""} #{provided.join(", ")} were requested to be filled in by AuthSig,
-      but were already provided in the request."
-    ]
-  end
-
   attr_reader :params, :user
   def initialize(params, user = nil)
     @params, @user = params.dup, user
+    apply_provides
+  end
+
+  def apply_provides
+    params.merge!(provided_populated)
   end
 
   def secret
