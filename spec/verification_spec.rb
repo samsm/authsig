@@ -9,13 +9,6 @@ describe Verification do
 
   let(:naked_verification) { Verification.new({}) }
 
-  def expect_errors_on(v, validation_context, *fields)
-    expect(v).not_to be_valid(validation_context)
-    fields.each do |f|
-      expect(v.errors.on(f.to_sym)).not_to be_nil, "field :#{f} didn't have errors"
-    end
-  end
-
   context "prep" do
     it "should validate presense of login" do
       expect_errors_on(naked_verification, :prep, :login)

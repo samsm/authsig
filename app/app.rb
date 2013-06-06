@@ -14,6 +14,8 @@ module Authsig
 
     enable :sessions
 
+    set :allow_disabled_csrf, true
+
     register Padrino::Warden
 
     Warden::Strategies.add(:password) do

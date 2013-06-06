@@ -17,3 +17,11 @@ def app
   #   Padrino.application
   Authsig::App.tap { |app| app.set :protect_from_csrf, false }
 end
+
+def expect_errors_on(v, validation_context = :default, *fields)
+  expect(v).not_to be_valid(validation_context)
+  fields.each do |f|
+    expect(v.errors.on(f.to_sym)).not_to be_nil, "field :#{f} didn't have errors"
+  end
+end
+
