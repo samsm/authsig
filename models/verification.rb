@@ -45,10 +45,27 @@ class Verification
   def initialize(params, user = nil)
     @params, @user = params.dup, user
     apply_provides
+    apply_overrides
+  end
+
+  def overrides
+    return [] unless override_slugs.any?
+    @overrides ||= Override.all(slug: override_slugs)
+  end
+
+  def override_slugs
+    [params["overrides"]].flatten.compact
   end
 
   def apply_provides
     params.merge!(provided_populated)
+  end
+
+  def apply_overrides
+    overrides.inject(params) do |hsh, override|
+      hsh.merge!(override.params)
+      hsh
+    end
   end
 
   def secret
@@ -123,7 +140,7 @@ class Verification
   end
 
   def sign
-    Sign.new(params.merge(provided_populated), secret)
+    Sign.new(params, secret)
   end
 
   def signature_match?
@@ -138,6 +155,7 @@ class Verification
       parsed = Time.send(strategy, maybe_time) rescue nil
       return parsed if parsed
     end
+    # Maybe this should be a validation instead.
     raise "Invalid time"
   end
 

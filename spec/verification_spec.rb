@@ -9,6 +9,22 @@ describe Verification do
 
   let(:naked_verification) { Verification.new({}) }
 
+  context "overrides" do
+    before do
+      Override.destroy
+    end
+    let(:override) {Override.create(slug: "slug", params: {"notify"=> "abc"})}
+    it "should override" do
+      verification = Verification.new({"overrides" => [override.slug]})
+      expect(verification.notify).to eq "abc"
+    end
+
+    it "should take precedence when overriding" do
+      verification = Verification.new({"notify" => "xyz", "overrides" => [override.slug]})
+      expect(verification.notify).to eq "abc"
+    end
+  end
+
   context "prep" do
     it "should validate presense of login" do
       expect_errors_on(naked_verification, :prep, :login)
