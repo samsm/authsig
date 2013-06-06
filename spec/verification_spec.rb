@@ -45,9 +45,10 @@ describe Verification do
       expect(verification.errors.on(:time)).to be_blank
     end
 
-    it "should not allow 'provided' conflicts" do
-      verification = Verification.new({"time" => Time.now.to_i, "provides" => "time"})
-      expect_errors_on(verification, :prep, :provided)
+    it "should override with 'provided' variables" do
+      yesterday = Time.now - 60*60*24
+      verification = Verification.new({"time" => yesterday.to_i, "provides" => "time"})
+      expect(verification.time).to be > yesterday
     end
 
     it "should not populate random provides" do
