@@ -1,6 +1,6 @@
 # Just some starting thoughts about how clients might work.
 
-module AuthSig
+module Authsig
   class Client
 
     def self.receive_notification(notification)
@@ -9,12 +9,12 @@ module AuthSig
       # http://authsig.heroku.com/verify/verified?
       #   login=user_1&
       #   notify=http://example.com/notification_endpoints/12345
-      # AuthSigNotification.create notification_id: 12345, url: "http://authsig.heroku..."
+      # AuthsigNotification.create notification_id: 12345, url: "http://authsig.heroku..."
     end
 
     def self.retrieve_notification(lookup)
       # The lookup might be 12345 in the continuation of the above scenario.
-      # note = AuthSigNotification.find_by_notification_id(12345)
+      # note = AuthsigNotification.find_by_notification_id(12345)
       # new(note.url)
     end
 

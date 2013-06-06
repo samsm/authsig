@@ -52,8 +52,7 @@ class Verification
   end
 
   def secret
-    logger.info "Using a dummy secret: BEWARE!"
-    'not really a secret'
+    Authsig.house_secret
   end
 
   def hide?

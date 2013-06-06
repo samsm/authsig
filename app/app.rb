@@ -2,6 +2,10 @@ module Authsig
 
   def self.admin_login   ; 'authsig'            ; end
   def self.admin_service ; 'unauthenticateable' ; end
+  def self.house_secret
+    logger.info "Using a dummy secret: BEWARE!"
+    'not really a secret'
+  end
 
   class App < Padrino::Application
     register Padrino::Rendering
