@@ -16,7 +16,15 @@ class VerificationPresenter
   end
 
   def redirect_url
-    verification.redirect_url
+    verification.defaulted_populated_params["redirect_url"]
+  end
+
+  def notify_url
+    verification.defaulted_populated_params["notify_url"]
+  end
+
+  def signed_data
+    verification.signed_populated_params
   end
 
   def errors?
@@ -37,12 +45,11 @@ class VerificationPresenter
   end
 
   def user_match?
-    verification.user_match?
+    !verification.errors.on(:user)
   end
 
   def verified_url
-    verify_path = view.url(:verify, :verified, verification.sign.to_signed_hash)
-    view.uri verify_path
+    verification.url(view)
   end
 
   private

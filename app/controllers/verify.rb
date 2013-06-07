@@ -3,6 +3,7 @@ require 'ostruct'
 Authsig::App.controllers :verify do
 
   get :verified, map: '/verify/verified' do
+    # Is current_user unnecessary here?
     load_verification(params, current_user)
     load_verification_presenter(@verification, :verify)
     status @verification_presenter.status_code
@@ -16,7 +17,7 @@ Authsig::App.controllers :verify do
     if @verification_presenter.redirect?
       redirect @verification_presenter.redirect_url
     else
-      render "verify/unsigned"
+      render "verify/request"
     end
   end
 
@@ -36,7 +37,7 @@ Authsig::App.controllers :verify do
   end
 
   define_method :verification_notifications do
-    vn = VerificationNotifier.new(@verification)
+    vn = VerificationNotifier.new(@verification_presenter.notify_url, @verification_presenter.signed_data)
     vn.send if vn.send? rescue RestClient::Forbidden
   end
 

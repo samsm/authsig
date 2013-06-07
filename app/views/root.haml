@@ -10,7 +10,7 @@
     %h1 Welcome to AuthSig
     %h4 Kinda know what you're doing? Here's a form, go nuts. It modifies the above url.
     %form{action: "/verify/request", method: "GET"}
-      - %w(login service redirect_url notify hide time).each do |attribute|
+      - %w(login service redirect_url notify_url hide time).each do |attribute|
         %label{for: attribute}= "#{attribute}:"
         %input{id: attribute, name: attribute}
 

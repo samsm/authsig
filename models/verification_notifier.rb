@@ -1,13 +1,14 @@
 require 'json'
+require 'rest_client'
 
 class VerificationNotifier
-  attr_reader :verification
-  def initialize(verification)
-    @verification = verification
+  attr_reader :url, :data
+  def initialize(url, data = nil)
+    @url, @data = url, data
   end
 
   def send?
-    verification.notify? && verification.user_match?
+    url
   end
 
   def send
@@ -15,14 +16,11 @@ class VerificationNotifier
   end
 
   private
-  def url
-    verification.notify
-  end
 
   def json
     {
       verified: true,
-      data: verification.params
+      data: data
     }
   end
 end

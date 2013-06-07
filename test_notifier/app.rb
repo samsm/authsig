@@ -8,7 +8,7 @@ module Authsig
 
     set :protect_from_csrf, false
 
-    post :test_verification, map: "/test_verification" do
+    post :test_verification, map: "" do
       logger.info "**Test Verification!"
       logger.info "** #{params.inspect}"
       logger.info "**/done"

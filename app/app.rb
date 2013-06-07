@@ -24,7 +24,6 @@ module Authsig
       end
 
       def authenticate!
-        logger.info "About to authenticate l: #{params["login"]}, p: #{params["password"]}"
         u = User.authenticate_password(params["login"], params["password"])
         u.nil? ? fail!("Could not log in") : success!(u)
       end
