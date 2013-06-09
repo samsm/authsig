@@ -29,10 +29,3 @@ shell.say ""
 end
 
 User.create(login: admin_login, service: admin_service)
-
-Secret.create({
-  valid_start: Time.now - (1 * 365 * 24 * 60 * 60), # ~1 year ago
-  valid_end:   Time.now + (1 * 365 * 24 * 60 * 60), # ~1 from now
-  login:       admin_login,
-  service:     admin_service
-})

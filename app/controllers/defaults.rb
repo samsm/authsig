@@ -1,14 +1,14 @@
-Authsig::App.controllers :overrides do
+Authsig::App.controllers :defaults do
 
   post :create, map: "", csrf_protection: false do
     content_type :json
-    override = Override.new_from_params(params)
-    if override.save
+    default = Default.new_from_params(params)
+    if default.save
       status 201
       "ok".to_json
     else
       status 400
-      "Bad request! #{override.errors.inspect}".to_json
+      "Bad request! #{default.errors.inspect}".to_json
     end
   end
 
@@ -16,12 +16,12 @@ Authsig::App.controllers :overrides do
   # Should be throttled somehow.
   # put :compromised, map: ":slug", csrf_protection: false do
   #   content_type :json
-  #   override = Override.get(params[:slug])
-  #   unless override
+  #   default = Default.get(params[:slug])
+  #   unless default
   #     status 404
-  #     "Override ##{params[:slug]} not found.".to_json
+  #     "Default ##{params[:slug]} not found.".to_json
   #   else
-  #     if override.match?(params)
+  #     if default.match?(params)
   #       "Compromise noted!".to_json
   #     else
   #       status 400

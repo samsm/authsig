@@ -15,7 +15,7 @@ class VerificationDefault
 
   def defaults
     return [] unless default_slugs.any?
-    @overrides ||= Override.all(slug: default_slugs)
+    @defaults ||= Default.all(slug: default_slugs)
   end
 
   def ordered_defaults

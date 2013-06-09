@@ -1,4 +1,4 @@
-class Override
+class Default
   include DataMapper::Resource
 
   property :id, Serial

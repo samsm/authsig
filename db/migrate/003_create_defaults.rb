@@ -1,6 +1,6 @@
-migration 4, :create_overrides do
+migration 4, :create_defaults do
   up do
-    create_table :overrides do
+    create_table :defaults do
       column :id, Integer, :serial => true
       column :slug, String, :length => 255
       column :params, DataMapper::Property::Text
@@ -9,6 +9,6 @@ migration 4, :create_overrides do
   end
 
   down do
-    drop_table :overrides
+    drop_table :defaults
   end
 end
