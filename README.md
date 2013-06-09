@@ -11,8 +11,9 @@ So should `foreman start`.
 `rake db:migrate` first, maybe?
 And `rake db:seed` too, perhaps.
 
-## Secret
+Set an AUTHSIG_HOUSE_SECRET environment variable.
+Adding AUTHSIG_HOUSE_SECRET=abcdefg-some-secret-here to `.env` is a good way to accomplish this in development mode.
 
-### Should be noted: there is a static "secret" the app right now. This is not really a secret at all, so the system should not be considered secure at all.
+The site root provides a lot of info about how stuff works.
 
-I'm still figuring out how to deal with secrets. I think there's a fairly coherent approach right around the corner.
+Here's a hosted version: http://authsig.herokuapp.com/

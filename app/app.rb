@@ -3,8 +3,12 @@ module Authsig
   def self.admin_login   ; 'authsig'            ; end
   def self.admin_service ; 'unauthenticateable' ; end
   def self.house_secret
-    logger.info "Using a dummy secret: BEWARE!"
-    'not really a secret'
+    ENV["AUTHSIG_HOUSE_SECRET"] || set_house_secret!
+  end
+
+  def self.set_house_secret!
+    raise "Add an environment vairable AUTHSIG_HOUSE_SECRET with a random string.
+              Put it in a .env file for development."
   end
 
   class App < Padrino::Application

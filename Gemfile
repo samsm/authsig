@@ -54,12 +54,15 @@ gem 'pry-padrino'
 # gem 'moneta'
 
 # Test requirements
-gem 'rr', :group => 'test'
-gem 'rspec', :group => 'test'
-gem 'rack-test', :require => 'rack/test', :group => 'test'
+gem 'rr',    group: 'test'
+gem 'rspec', group: 'test'
+gem 'rack-test', require: 'rack/test', group: 'test'
 
 # Heroku
-gem 'dm-postgres-adapter', :group => :production
+gem 'dm-postgres-adapter', group: :production
 
 # For sending notifications to hosts.
 gem 'rest-client'
+
+# For making it easier to manage environment variables in development.
+gem 'dotenv', groups: [:development, :test]
