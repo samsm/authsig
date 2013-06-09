@@ -55,8 +55,14 @@
         Another reasonable option might be "twitter" or "facebook".
       %dt redirect_url
       %dd If set, the user will be redirected to this url after verification.
-      %dt notify
-      %dd If set, will POST the verification to the url specified here.
+      %dt notify_url
+      %dd
+        If set, will POST the verification to the url specified here.
+        %br
+        %small
+          There is an endpoint set up at `/test_notifier` you can use to try
+          this (it just logs the posted data). Careful when using a
+          one-request-at-a-time server such as thin, could block.
       %dt hide
       %dd
         If set, the user will not be show the verified url.
@@ -70,6 +76,27 @@
       %dd
         The number of seconds off the above calculation can be. Maybe need to be high if a user needs to
         log in before continuing the request process.
+    %h4 Default
+    %p
+      Defaults are a way to populate data in a request without that data
+      ending up in an AuthSig url.
+    %p
+      For example, if you've created a default called `my-secret` with the
+      data `{"secret" : "my-secret"}`, instead of using the house secret,
+      AuthSig will use `"my-secret"` when computing the signature. It will not
+      show that default data to the user (or post that data to a notify url).
+    %p ex: `http://authsig.example.com/request?login=user_1&default=my-secret`
+    %p This is helpful for using your own secrets, or shortening urls.
+    %p
+      In this implementation, defaults are created through an api detailed
+      below, though there is little reason this api couldn't be different.
+    %dl
+      %dt default
+      %dd
+        Pass in a single default, or more than one in the form of an array.
+    %h4 Default creation api
+    %p POST /defaults {"slug": "my-secret", "params": {"secret": "my-secret"}}
+    %p If the slug is available, AuthSig will create it!
     %h4 Provides
     %dl
       %dt provides
