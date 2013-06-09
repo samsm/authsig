@@ -12,7 +12,12 @@ class VerificationNotifier
   end
 
   def send
-    RestClient.post url, json, content_type: :json, accept: :json
+    RestClient::Request.execute method: :post,
+                                payload: json,
+                                url:     url,
+                                timeout: 5,
+                                open_timeout:5,
+                                headers: {content_type: :json, accept: :json}
   end
 
   private
