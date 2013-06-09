@@ -28,6 +28,13 @@ Authsig::App.controllers :verify do
     render :root
   end
 
+  post :test_verification, map: "/test-notifer", csrf_protection: false do
+    logger.info "**Test Verification!"
+    logger.info "** #{params.inspect}"
+    logger.info "**/done"
+    'Done!'
+  end
+
   define_method :load_verification do |params, user|
     @verification = Verification.new(params, user)
   end
