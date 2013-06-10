@@ -13,10 +13,12 @@
     %p= link_to @verification_presenter.verified_url, @verification_presenter.verified_url
   - else
     - if @verification_presenter.user_match?
-      %p Since "hide" was used in the verification request, AuthSig will not show you the signature or verified url.
+      %p
+        %small Since "hide" was used in the verification request, AuthSig will not show you the signature or verified url.
   - unless @verification_presenter.user_match?
-    %p
-      %a{href: url(:sessions, :login, login: params[:login])}
-        Login as
-        %strong= params[:login]
-        to get a signed url.
+    - unless params[:login].blank?
+      %p
+        %a{href: url(:sessions, :login, login: params[:login])}
+          Login as
+          %strong= params[:login]
+          to get a signed url.

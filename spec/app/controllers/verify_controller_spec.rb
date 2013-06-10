@@ -18,10 +18,16 @@ describe "Verify controller" do
       let(:user) { OpenStruct.new login: "test", service: "password" }
       before { login_as(user) }
 
-      it "show signed url to correct logged in user" do
+      it "should show signed url to correct logged in user" do
         get "/verify/request", login: user.login
         expect(last_response.body).
           to match "The following link verifies that AuthSig has confirmed your identity"
+      end
+
+      it "should not show signed url when no login is specified" do
+        get "/verify/request"
+        expect(last_response.body).
+          not_to match "The following link verifies that AuthSig has confirmed your identity"
       end
 
       it "sends login details to notify url" do

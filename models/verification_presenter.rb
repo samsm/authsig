@@ -41,11 +41,11 @@ class VerificationPresenter
   end
 
   def show_signed_url_to_current_user?
-    user_match? && verification.show?
+    !errors? && verification.show?
   end
 
   def user_match?
-    !verification.errors.on(:user)
+    !verification.errors.on(:user) && !verification.errors.on(:login)
   end
 
   def verified_url
