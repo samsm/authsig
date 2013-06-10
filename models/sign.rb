@@ -2,17 +2,18 @@ require 'bcrypt'
 
 class Sign
   attr_reader :data
+
   def initialize(data = {})
     @signature = data.delete('signature')
     @data      = data
   end
 
   def create_signature
-    BCrypt::Password.create(to_sign, cost: BCrypt::Engine::DEFAULT_COST)
+    BCrypt::Password.create(sha512d(to_sign), cost: BCrypt::Engine::DEFAULT_COST)
   end
 
   def match?
-    signature == to_sign
+    signature == sha512d(to_sign)
   end
 
   private
@@ -32,6 +33,11 @@ class Sign
     # ?login=user1:login=user2&service=password
     preped = data.sort
     Hash[preped].inject('') {|sum, pair| sum += "#{pair.first}:#{pair.last}" }
+  end
+
+  def sha512d(to_sha512)
+    @@sha512 ||= Digest::SHA256.new
+    @@sha512.digest(to_sha512)
   end
 end
 

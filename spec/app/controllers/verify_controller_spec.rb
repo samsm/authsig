@@ -48,7 +48,7 @@ describe "Verify controller" do
     end
 
     it "should verify with correct signature" do
-      get "/verify/verified", login: 'test', signature: "$2a$10$iGX2Zi3s6vmR2JRQuwuzCu7Y1g5UoJXntkxLBn8XvkeB6T7xBkLAm"
+      get "/verify/verified", login: 'test', signature: "$2a$10$DDpnP1sSQAqASAc7eu9o4OWsV27oxM7SKLm58EIfF5q3pgWr3vKJy"
       expect(last_response.status).to eq(200)
     end
   end

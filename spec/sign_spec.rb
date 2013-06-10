@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Sign do
   let(:example_data) { {"login" => "test", "service" => "password", "secret" => secret } }
   let(:data_with_signature) { example_data.merge("signature" => example_signature) }
-  let(:example_signature) { "$2a$10$snSW6V1YSBmovmevGZmqKOHiNa58Jwl9TJufQWe.o1gGUEmaIYe5i" }
+  let(:example_signature) { "$2a$10$OTmM6nM3Zg7E6MwHWO.arOcFfRSfdZoWFsWcSiqLHJVnQ1WITnvfm" }
   let(:secret) { 'hi' }
   let(:sign) { Sign.new(example_data) }
 
@@ -35,6 +35,15 @@ describe Sign do
     tampered = 'bye'
     data_with_signature.merge!("secret" => tampered)
     expect(Sign.new(data_with_signature)).not_to be_match
+  end
+
+  it "should not verify non-identical data even if the first 72 characters are the same" do
+    eighty_characters = "*" * 80
+    sign = Sign.new({"test" => eighty_characters})
+    signature = sign.create_signature
+    expect(Sign.new({"test" => eighty_characters, "signature" => signature})).to be_match
+    expect(Sign.new({"test" => eighty_characters + 'tampered', "signature" => signature})).
+      not_to be_match
   end
 
 end

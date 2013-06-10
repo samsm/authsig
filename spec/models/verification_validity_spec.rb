@@ -4,7 +4,7 @@ require 'ostruct'
 describe VerificationValidity do
   let(:time) { Time.iso8601("2013-05-21T17:17:19Z") }
   # signature $2a$...9g6 for {"time" => time, "login" => "test"}
-  let(:signature) { "$2a$10$8NlTzn4iM/ZEG3hZo7qqq.QRPf0/cYtGygnz0Y3i.xxOd0Mod.9g6" }
+  let(:signature) { "$2a$10$XJDfnrt/dMlEEa7MyApCjeyg6kQxOVLAuBzkhm8hV1ONdgcu/nvIm" }
 
   let(:naked_verification) { VerificationValidity.new({}) }
 
@@ -76,7 +76,8 @@ describe VerificationValidity do
   end
 
   it "should verify valid signed params" do
-    verification = VerificationValidity.new({"time" => time, "secret" => 'not really a secret', "login" => "test", "signature" => signature})
+    verification = VerificationValidity.new({"time" => time, "secret" => 'not really a secret',
+                                             "login" => "test", "signature" => signature})
     expect(verification).to be_signature_match
   end
 

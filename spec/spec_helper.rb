@@ -25,3 +25,5 @@ def expect_errors_on(v, validation_context = :default, *fields)
   end
 end
 
+ENV["AUTHSIG_HOUSE_SECRET"] = "Test house secret."
+
