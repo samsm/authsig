@@ -24,10 +24,13 @@ describe "Verify controller" do
           to match "The following link verifies that AuthSig has confirmed your identity"
       end
 
-      xit "sends login details to notify url" do
-        # Not sure how to do this.
-        app.should_receive :verification_notifications
-        get "/verify/request", login: user.login, notify: "http://example.com/"
+      it "sends login details to notify url" do
+        # This song and dance is to get around mock requiring exact params
+        canary = Object.new
+        mock(canary).dies { "I'm dead." }
+        url = "http://example.com/"
+        stub(RestClient::Request).execute { |args| canary.dies if args[:url] == url }
+        get "/verify/request", login: user.login, notify_url: url
       end
 
     end
