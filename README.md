@@ -86,6 +86,24 @@ For example, if there was a default with the slug `my-secret` and value `{secret
 
 `/verify/request?login=user_1&default[my-secret]&secret=my-secret`
 
+### Rationale
+
+#### Ease
+OAuth and OpenID impose a lot of rules in order to fit the needs of a diverse set of authentication scenarios.
+
+AuthSig does not impose rules, it just provides options that allow for the implementation of a variety of rules. It is easier, because it doesn't demand anything. If you want to only redirect to a particular domain, don't accept AuthSig urls that have redirect_urls with different domains. If you want the signature secretly sent to an address, put that in the request. AuthSig will work with or without these options.
+
+An AuthSig client can be very simple, verifying a url is as easy as visiting that url.
+
+#### Portability
+Verified AuthSig urls represent a person being identified. They are easy enough to make that an end user could initiate the process on their own and cut/paste the url to demonstrate their identity.
+
+`http://authsig.herokuapp.com/verify/verified?login=user_1&hi=wearing-a-blue-t-shirt&signature=%242a%2410%24PzwOLCTN.HIT7ubaAyi%2FvuKkIfrOcM23r2Maz%2FyAQfDjEBcNkwMtu`
+
+These urls can be emailed, sent through chat, be single purpose. The key is that only the identified user can trigger the generation of new verified urls.
+
+When your app collects an AuthSig verified url, it doesn't have to check it right away. Imagine an AuthSig url sent alongside a blog post or comment. You can check the validity of that url at the time of publishing rather than at the time of storing. This flexibility was the incentive for creating this system.
+
 ## Installation
 
 It's a Padrino (rack) app.
