@@ -34,7 +34,7 @@ gem 'tilt', '1.3.7'
 # Test requirements
 
 # Padrino Stable Gem
-gem 'padrino', '0.11.1'
+gem 'padrino', '~>0.11.1'
 
 # Or Padrino Edge
 # gem 'padrino', :github => 'padrino/padrino-framework'
